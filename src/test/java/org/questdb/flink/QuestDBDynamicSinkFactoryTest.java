@@ -115,9 +115,9 @@ public class QuestDBDynamicSinkFactoryTest {
                 .executeInsert("questTable")
                 .await();
 
-        await().atMost(QUERY_WAITING_TIME_SECONDS, TimeUnit.SECONDS).untilAsserted(() -> assertSql("\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"\r\n"
+        assertSqlEventually("\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"\r\n"
                         + "1,\"2022-06-01T10:10:10.000010Z\",\"ABCDE\",12.119999885559,2,\"2003-10-20T00:00:00.000000Z\",\"2012-12-12T12:12:12.000000Z\"\r\n",
-                "select a, b, c, d, e, f, g from " + testName));
+                "select a, b, c, d, e, f, g from " + testName);
     }
 
     private static Map<String, String> getSinkOptions() {
@@ -189,7 +189,7 @@ public class QuestDBDynamicSinkFactoryTest {
     }
 
     @Test
-    public void testEventTime() throws ExecutionException, InterruptedException {
+    public void testEventTime() throws Exception {
         TableEnvironment tableEnvironment =
                 TableEnvironment.create(EnvironmentSettings.inStreamingMode());
         tableEnvironment.getConfig().set(TableConfigOptions.LOCAL_TIME_ZONE, "UTC");
@@ -220,9 +220,9 @@ public class QuestDBDynamicSinkFactoryTest {
         tableEnvironment.executeSql(
                 "INSERT INTO questTable select * from datagen").await();
 
-        await().atMost(QUERY_WAITING_TIME_SECONDS, TimeUnit.SECONDS).untilAsserted(() -> assertSql("\"count\"\r\n"
+        assertSqlEventually("\"count\"\r\n"
                         + "10\r\n",
-                "select count(*) from " + testName + " where col_timestamp = timestamp"));
+                "select count(*) from " + testName + " where col_timestamp = timestamp");
     }
 
     @Test
@@ -277,11 +277,14 @@ public class QuestDBDynamicSinkFactoryTest {
                 ).executeInsert("questTable")
                 .await();
 
-        await().atMost(QUERY_WAITING_TIME_SECONDS, TimeUnit.SECONDS).untilAsserted(() -> assertSql("\"a\",\"b\",\"c\",\"d\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\"\r\n"
+        assertSqlEventually("\"a\",\"b\",\"c\",\"d\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\"\r\n"
                         + "\"c\",\"varchar\",\"string\",true,42,42,42,42,10000000000,42.419998168945,42.42,\"2022-06-06T00:00:00.000000Z\",43920000,\"2022-09-03T12:12:12.000000Z\",\"2022-09-03T12:12:12.000000Z\"\r\n",
-                "select a, b, c, d, h, i, j, k, l, m, n, o, p, q, r from " + testName));
+                "select a, b, c, d, h, i, j, k, l, m, n, o, p, q, r from " + testName);
     }
 
+    private void assertSqlEventually(String expectedResult, String query) {
+        await().atMost(QUERY_WAITING_TIME_SECONDS, TimeUnit.SECONDS).untilAsserted(() -> assertSql(expectedResult, query));
+    }
 
     private void assertSql(String expectedResult, String query) throws IOException {
         try (CloseableHttpResponse response = executeQuery(query)) {
