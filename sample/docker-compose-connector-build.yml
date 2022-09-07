@@ -1,0 +1,7 @@
+version: '2.1'
+services:
+  questdb-connector:
+    image: samples/flink-questdb-connector
+    build:
+      dockerfile: ./connector/Dockerfile
+      context: ./../
