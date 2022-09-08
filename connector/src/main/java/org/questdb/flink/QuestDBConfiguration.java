@@ -39,7 +39,7 @@ public final class QuestDBConfiguration implements Serializable {
                     .defaultValue(false)
                     .withDescription("Optional enable TLS/SSL encryption");
 
-    public static final ConfigOption<Integer> BUFFER_SIZE_BYTES =
+    public static final ConfigOption<Integer> BUFFER_SIZE_KB =
             ConfigOptions.key("buffer.size.kb")
                     .intType()
                     .noDefaultValue()
@@ -82,6 +82,6 @@ public final class QuestDBConfiguration implements Serializable {
     }
 
     public Optional<Integer> getBufferSize() {
-        return readableConfig.getOptional(BUFFER_SIZE_BYTES);
+        return readableConfig.getOptional(BUFFER_SIZE_KB);
     }
 }

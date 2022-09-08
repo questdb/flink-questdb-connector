@@ -107,7 +107,7 @@ public final class QuestDBDynamicSinkFactory implements DynamicTableSinkFactory 
         options.add(QuestDBConfiguration.TLS);
         options.add(QuestDBConfiguration.TABLE);
         options.add(QuestDBConfiguration.SINK_PARALLELISM);
-        options.add(QuestDBConfiguration.BUFFER_SIZE_BYTES);
+        options.add(QuestDBConfiguration.BUFFER_SIZE_KB);
         return options;
     }
 }
