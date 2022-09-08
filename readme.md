@@ -3,10 +3,8 @@ Sink data from [Apache Flink](https://flink.apache.org/) pipelines to [QuestDB](
 
 The connector implements Apache Flink [Table / SQL API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). 
 
-## Installation
-Save `flink-questdb-connector-0.1-SNAPSHOT.jar` into your Flink installation `lib` directory, e.g. `flink-1.15.2/lib`
-
 ## Usage with Flink SQL
+_This guide assumes you are familiar with Apache Flink. Please see [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15//docs/try-flink/local_installation/) to learn Flink Basics._ 
  * Save `flink-questdb-connector-<version>-SNAPSHOT.jar` in Flink `./lib/` directory
  * Start Apache Flink server
  * Start QuestDB server
@@ -26,7 +24,7 @@ Expected output: `[INFO] Execute statement succeed.`
  * Go to QuestDB web console and run: `select * from Orders;` You should see a table being created. Chances are the table will be empty. That's caused by [QuestDB commit lag](https://questdb.io/docs/guides/out-of-order-commit-lag), the inserted row will be visible eventually. 
 
 ## Usage with Table API from Java
-See a ready to use [sample project](sample/readme.md).
+See a ready to use [sample project](sample/).
 
 ## Configuration
 TBD
@@ -34,3 +32,6 @@ TBD
 ## FAQ
 Q: Why is QuestDB client not repackaged into a different Java package?<br/>
 A: QuestDB client uses native code, this makes repackaging hard. 
+
+## TODO:
+- Publish to Maven Central for easy consumption 
