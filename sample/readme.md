@@ -1,6 +1,6 @@
 # Sample project with Flink QuestDB connector
 ## What does the sample project do?
-The project shows how to use the QuestDB connector from Flink Table API. It creates a datagen source generating 100 random rows per second and then feeds the generated rows into QuestDB. 
+The [project](https://github.com/questdb/flink-questdb-connector/blob/main/sample/src/main/java/org/quesdb/flink/SampleApplication.java) shows how to use the QuestDB connector from [Flink Table API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). It creates a [datagen](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/datagen/) source generating 100 random rows per second and then feeds the generated rows into [QuestDB](https://questdb.io). 
 
 The application is packaged as Docker containers thus it can run locally on most platforms. 
 
