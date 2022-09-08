@@ -29,6 +29,8 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   questdb:
     image: questdb/questdb:6.5.2
+    expose:
+      - "9009"
     ports:
       - "19000:9000"
     environment:
