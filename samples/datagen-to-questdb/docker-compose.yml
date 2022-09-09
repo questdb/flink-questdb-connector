@@ -1,10 +1,10 @@
 version: '2.1'
 services:
   jobmanager:
-    image: questdb-flink-sample
+    image: questdb-flink-sample-datagen
     build:
-      dockerfile: ./Dockerfile-Samples
-      context: ./../
+      dockerfile: ./Dockerfile-Sample-Datagen
+      context: ./../../
     hostname: "jobmanager"
     expose:
       - "6123"
@@ -16,7 +16,7 @@ services:
     depends_on:
       - questdb
   taskmanager:
-    image: questdb-flink-sample
+    image: questdb-flink-sample-datagen
     expose:
       - "6121"
       - "6122"

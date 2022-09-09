@@ -1,16 +1,16 @@
-package org.quesdb.flink;
+package org.questdb.flink;
 
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableEnvironment;
-import org.questdb.flink.QuestDBConfiguration;
 
 import static org.apache.flink.table.api.DataTypes.BIGINT;
+import static org.apache.flink.table.api.DataTypes.DOUBLE;
 import static org.apache.flink.table.api.DataTypes.STRING;
 
 
-public class SampleApplication {
+public class DatagenToQuestDB {
     public static void main(String[] args) {
         EnvironmentSettings settings = EnvironmentSettings.newInstance().build();
         TableEnvironment tEnv = TableEnvironment.create(settings);

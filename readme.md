@@ -24,7 +24,7 @@ Expected output: `[INFO] Execute statement succeed.`
  * Go to QuestDB web console and run: `select * from Orders;` You should see a table being created. Chances are the table will be empty. That's caused by [QuestDB commit lag](https://questdb.io/docs/guides/out-of-order-commit-lag), the inserted row will be visible eventually. 
 
 ## Usage with Table API from Java
-See a ready to use [sample project](sample/).
+See a ready to use [sample projects](samples/).
 
 ## Configuration
 TBD

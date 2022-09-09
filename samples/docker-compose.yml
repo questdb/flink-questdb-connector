@@ -1,0 +1,67 @@
+version: '2.1'
+services:
+  jobmanager:
+    image: questdb-flink-sample
+    build:
+      dockerfile: ./Dockerfile-Samples
+      context: ./../
+    hostname: "jobmanager"
+    expose:
+      - "6123"
+    ports:
+      - "8082:8081"
+    command: standalone-job
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    depends_on:
+      - questdb
+      - producer
+  taskmanager:
+    image: questdb-flink-sample
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - jobmanager:jobmanager
+      - questdb:questdb
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  questdb:
+    image: questdb/questdb:6.5.2
+    expose:
+      - "9009"
+    ports:
+      - "19000:9000"
+    environment:
+      - QDB_CAIRO_COMMIT_LAG=1000
+      - JAVA_OPTS=-Djava.locale.providers=JRE,SPI
+  zookeeper:
+    image: zookeeper:3.6.2
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:2.13-2.8.1
+    ports:
+      - "9092:9092"
+    expose:
+      - "9092"
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper:zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      KAFKA_ADVERTISED_PORT: "9092"
+      HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "kafka:1:1"
+  producer:
+    image: questdb-flink-sample-producer
+    build:
+      context: ./producer
+      dockerfile: ./Dockerfile
+    depends_on:
+      - kafka
