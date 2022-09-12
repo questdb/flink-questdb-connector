@@ -43,7 +43,7 @@ public class KafkaToQuestDB {
                 .build());
 
         tEnv.executeSql("insert into Quest "
-                + "select product_id as instrument, "
+                + "select product_id, "
                     + "changeTable.change[1] as side, "
                     + "cast(changeTable.change[2] as double) as price, "
                     + "cast(changeTable.change[3] as double) as volume\n"
