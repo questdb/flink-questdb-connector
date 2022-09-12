@@ -134,7 +134,7 @@ CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
 It transforms the outer array into new rows, cross-joins them with the original table and then use Flink array operators to extract elements of the inner array.
 
 There is another complication: Our Kafka topic contains more than these updates. We also receive other kinds of messages
-from Coinbase. This mimic a real-world situation where Kafka is use as a backbone for all data in a company and our
+from Coinbase. This mimic a common real-world situation where Kafka is used as a backbone for all data in a company and our
 Flink application is just one of many consumers and have a little say on the content of the topic. Here is an example
 of such message:
 ```json
@@ -158,7 +158,11 @@ of such message:
 ```
 We want to ignore all messages which do not have a type set as `l2update`. SQL `WHERE` clause comes to the rescue. The SQL looks like this:
 ```sql
-SELECT product_id , changeTable.change[1] as side, changeTable.change[2] as price, changeTable.change[3] as volume, ts
+SELECT product_id, 
+       changeTable.change[1] as side,
+       changeTable.change[2] as price,
+       changeTable.change[3] as volume,
+       ts
 FROM ticks
 CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
 WHERE type = 'l2update';
@@ -166,11 +170,17 @@ WHERE type = 'l2update';
 This only selects the `l2update` messages - the only message type we want to feed into QuestDB. The last missing bit is
 to INSERT the matching message into QuestDB. That's as easy as prepending the SELECT with `INSERT into <tableName>`
 this the final SQL looks like this:
-``sql
+```sql
 INSERT INTO Quest
-SELECT product_id , changeTable.change[1] as side, changeTable.change[2] as price, changeTable.change[3] as volume, ts
-FROM ticks
-CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
-WHERE type = 'l2update';
-``
+    SELECT product_id,
+        changeTable.change[1] as side,
+        CAST(changeTable.change[2] as double) as price,
+        CAST(changeTable.change[3] as double) volume,
+        ts
+    FROM ticks
+    CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
+    WHERE type = 'l2update';
+```
+Notice how we apply casting to transform elements of the inner array into `DOUBLE` type we want to store in QuestDB.  
+
 And that's all!
