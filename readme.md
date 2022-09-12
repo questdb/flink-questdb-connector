@@ -27,11 +27,23 @@ Expected output: `[INFO] Execute statement succeed.`
 See a ready to use [sample projects](samples/).
 
 ## Configuration
-TBD
+The connector supports following Options:
+
+| Name           | Type    | Example                                     | Default                  | Meaning                                                                   |
+|----------------|---------|---------------------------------------------|--------------------------|---------------------------------------------------------------------------|
+| host           | STRING  | localhost:9009                              | N/A                      | Host and port where QuestDB server is running                             |
+| username       | STRING  | testUser1                                   | admin                    | Username for authentication. The default is used when also `token` is set |
+| token          | STRING  | GwBXoGG5c6NoUTLXnzMxw_uNiVa8PKobzx5EiuylMW0 | admin                    | Token for authentication                                                  |
+| table          | STRING  | my_table                                    | Same as Flink table name | Target table in QuestDB                                                   |
+| tls            | BOOLEAN | true                                        | false                    | Whether to use TLS/SSL for connecting to QuestDB server                   | 
+| buffer.size.kb | INTEGER | 32                                          | 64                       | Size of the QuestDB client send buffer                                    |
 
 ## FAQ
 Q: Why is QuestDB client not repackaged into a different Java package?<br/>
-A: QuestDB client uses native code, this makes repackaging hard. 
+A: QuestDB client uses native code, this makes repackaging hard.
+
+Q: I need to use QuestDB as a source, what should I do?<br/>
+A: This connector is Sink only. If you want to use QuestDB as a Source then your best chance is to use [Flink JDBC source](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/jdbc/) and rely on [QuestDB Postgres compatibility](https://questdb.io/docs/develop/query-data#postgresql-wire-protocol).
 
 ## TODO:
 - Publish to Maven Central for easy consumption 
