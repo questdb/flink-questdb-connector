@@ -1,6 +1,14 @@
 # Sample project with Flink QuestDB connector
 ## What does the sample project do?
-TBD
+The project uses Coinbase API to fetch live orders and store them in QuestDB where the orders can be analyzed further. Technicaly, it's split into 2 parts.
+1. Coinbase -> Kafka
+2. Kafka -> QuestDB 
+
+![Diagram](diagram.png)
+
+The first part is a small node.js application. It does nothing else but connect to the Exchange API, subscribe to a bunch of channels and then store all incoming JSON data into a Kafka topic. 
+
+The 2nd part is more interesting. It uses Apache Flink for data filtering, transformations and ingestion to QuestDB. 
 
 The application is packaged as Docker containers thus it can run locally on most platforms.
 
