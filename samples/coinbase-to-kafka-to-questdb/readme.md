@@ -124,9 +124,9 @@ The result of this query would look like this:
 The UNNEST() function effectively flatten arrays by expanding them into additional rows. In our data pipeline it's used as this:
 ```sql
 SELECT product_id, 
-       changeTable.change[1] as side, 
-       changeTable.change[2] as price, 
-       changeTable.change[3] as volume,
+       changeTable.change[1] AS side, 
+       changeTable.change[2] AS price, 
+       changeTable.change[3] AS volume,
        ts
 FROM ticks
 CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
@@ -159,9 +159,9 @@ of such message:
 We want to ignore all messages which do not have a type set as `l2update`. SQL `WHERE` clause comes to the rescue. The SQL looks like this:
 ```sql
 SELECT product_id, 
-       changeTable.change[1] as side,
-       changeTable.change[2] as price,
-       changeTable.change[3] as volume,
+       changeTable.change[1] AS side,
+       changeTable.change[2] AS price,
+       changeTable.change[3] AS volume,
        ts
 FROM ticks
 CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
@@ -173,9 +173,9 @@ this the final SQL looks like this:
 ```sql
 INSERT INTO Quest
     SELECT product_id,
-        changeTable.change[1] as side,
-        CAST(changeTable.change[2] as double) as price,
-        CAST(changeTable.change[3] as double) volume,
+        changeTable.change[1] AS side,
+        CAST(changeTable.change[2] AS double) AS price,
+        CAST(changeTable.change[3] AS double) volume,
         ts
     FROM ticks
     CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
