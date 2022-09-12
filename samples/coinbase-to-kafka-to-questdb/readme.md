@@ -70,7 +70,7 @@ This is how a simple order update looks like:
   "time": "2022-09-09T11:38:11.480952Z"
 }
 ```
-It looks trivial, but it is not. Pay attention to the `changes` field. There is an array of array. In the message above the outer array has just a single element - another array. But the message could also look like this:
+It looks trivial, but it is not. Pay attention to the `changes` field. There is an array of arrays. In the message above the outer array has just a single element - another array. But the message could also look like this:
 ```json
 {
   "type": "l2update",
