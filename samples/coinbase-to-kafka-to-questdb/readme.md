@@ -24,13 +24,14 @@ The project was tested on MacOS with M1, but it should work on other platforms t
 
 ## What is it good for?
 You can run analytical queries to get additional insight into order data. 
-For example this query will show you all BUY orders with a price set to 1 USD.
+For example this query will show how many BUY orders with a price set to 1 USD is there per minute.
 ```sql
-select timestamp, price, volume, count() from orders
-where price = 1 and side = 'buy'
-sample by 1m ALIGN to CALENDAR;
+SELECT timestamp, price, volume, count() 
+FROM orders
+WHERE price = 1 and side = 'buy'
+SAMPLE BY 1m ALIGN to CALENDAR;
 ```
-At that time I'm writing this there is roughly 1 BUY order every 10s with a price set to $1. I'm not quite sure what's
+At that time I'm writing this there is roughly 1 such BUY order every 10s. I'm not quite sure what's
 the motivation behind such orders, but I find it quite interesting.
 
 You can run more practical queries, have a look at [QuestDB documentation](https://questdb.io/docs/concept/sql-execution-order) for some inspiration.
