@@ -92,20 +92,19 @@ It looks trivial, but it is not. Pay attention to the `changes` field. There is 
 ```
 In this case the outer array has multiple inner arrays. QuestDB does not support arrays. We need to rid off the array before sending the data to QuestDB. In turns out Apache Flink has a good support for this case: It has a function `UNNEST()` which expands array elements into rows. Then it's enough to use `CROSS JOIN` to connect expanded rows from array with the original table again.
 
-Consider this example. Let's have a table `fruits` which looks as follows:
+Consider this example. Let's have a Flink table `fruits` with following columns:
+1. Fruit - String
+2. Price - String
+3. Parts - Array of Strings.
+
+The table has 2 rows:
 
 | Fruit     | Price     | Parts              |
 |-----------|-----------|--------------------|
 | Apple     | 1.99      | [seed, pulp, skin] |
 | Raspberry | 1.89  | [pulp, seeds]      |
 
-The table with 3 columns: 
-1. Fruit - String
-2. Price - String
-3. Parts - Array of Strings.
-
-The table has 2 rows.
-We can use the UNNEST() function to unpack the arrays:
+Let's use the UNNEST() function to unpack the arrays:
 ```sql
 SELECT fruit, price, part
 FROM fruits
