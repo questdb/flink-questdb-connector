@@ -51,7 +51,7 @@ The 2nd part is more interesting. It uses Apache Flink for data filtering, trans
 2. Define QuestDB sink table
 3. Data pipeline to move data from Kafka to Quest
 
-Table definitions are rather trivial (TODO: Why watermarks don't work?) this we focus on the data pipeline as it's doing
+Table definitions are rather trivial (TODO: Why watermarks don't appear work?) thus we focus on the data pipeline as it's doing
 a bit more than just moving data from Kafka to Quest. But before diving into the code let's look at JSON data we receive
 from the exchange.
 
