@@ -23,7 +23,7 @@ The project was tested on MacOS with M1, but it should work on other platforms t
 - You can play with the [application](src/main/java/org/questdb/flink/KafkaToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 
 
 ## How does it work:
-Technicaly, it's split into 2 parts.
+The application is split into 2 parts.
 1. Coinbase -> Kafka
 2. Kafka -> QuestDB
 
@@ -35,9 +35,11 @@ The first part is a [small node.js application](../producer/index.js). It does n
 The 2nd part is more interesting. It uses Apache Flink for data filtering, transformations and ingestion to QuestDB. The [sample program combines](src/main/java/org/questdb/flink/KafkaToQuestDB.java) Table API and SQL to interact with Flink. The program has 3 parts:
 1. Define Kafka table
 2. Define QuestDB table
-3. Transformation pipeline to move data from Kafka to Quest
+3. Data pipeline to move data from Kafka to Quest
 
-Table definitions are rather trivial (TODO: Why watermarks don't work?) so let's focus on the transformation pipeline as it's doing a bit more than just moving data from Kafka to Quest. But before diving into the code let's look at JSON data we receive from the exchange.
+Table definitions are rather trivial (TODO: Why watermarks don't work?) this we focus on the data pipeline as it's doing
+a bit more than just moving data from Kafka to Quest. But before diving into the code let's look at JSON data we receive
+from the exchange.
 
 This is how a simple order update looks like:
 ```json
