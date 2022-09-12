@@ -1,4 +1,4 @@
-# Sample project with Flink QuestDB connector
+# Sample project: Coinbase -> Kafka -> Flink -> QuestDB 
 ## What does the sample project do?
 The project uses Coinbase API to fetch live orders and store them in QuestDB where the orders can be analyzed further. 
 
