@@ -46,8 +46,8 @@ The application is split into 2 parts.
 The first part is a [small node.js application](../producer/index.js). It does nothing else but connect to the Exchange API, subscribe to a bunch of channels and then store all incoming JSON data into a Kafka topic.
 
 The 2nd part is more interesting. It uses Apache Flink for data filtering, transformations and ingestion to QuestDB. The [sample program combines](src/main/java/org/questdb/flink/KafkaToQuestDB.java) Table API and SQL to interact with Flink. The program has 3 parts:
-1. Define Kafka table
-2. Define QuestDB table
+1. Define Kafka source table
+2. Define QuestDB sink table
 3. Data pipeline to move data from Kafka to Quest
 
 Table definitions are rather trivial (TODO: Why watermarks don't work?) this we focus on the data pipeline as it's doing
