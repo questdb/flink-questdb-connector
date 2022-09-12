@@ -175,7 +175,7 @@ INSERT INTO Quest
     SELECT product_id,
         changeTable.change[1] AS side,
         CAST(changeTable.change[2] AS double) AS price,
-        CAST(changeTable.change[3] AS double) volume,
+        CAST(changeTable.change[3] AS double) AS volume,
         ts
     FROM ticks
     CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
