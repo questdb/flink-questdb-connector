@@ -100,17 +100,18 @@ Consider this example. Let's have a table `fruits` which looks as follows:
 | Raspberry | 1.89  | [pulp, seeds]      |
 
 The table with 3 columns: 
-1. Fruit - string
+1. Fruit - String
 2. Price - String
-3. Parts - array of string.
-The table has 2 rows.
+3. Parts - Array of Strings.
 
+The table has 2 rows.
 We can use the UNNEST() function to unpack the arrays:
 ```sql
 SELECT fruit, price, part
 FROM fruits
 CROSS JOIN UNNEST(fruits.parts) (part)
 ```
+
 The result of this query would look like this:
 
 | Fruit     | Price     | Part         |
@@ -121,7 +122,7 @@ The result of this query would look like this:
 | Raspberry | 1.89  | pulp |
 | Raspberry | 1.89  | seeds |
 
-It transforms an array into additional rows. In the pipeline this is expressed as this:
+The UNNEST() function effectively flatten arrays by expanding them into additional rows. In our data pipeline it's used as this:
 ```sql
 SELECT product_id, 
        changeTable.change[1] as side, 
@@ -131,7 +132,7 @@ SELECT product_id,
 FROM ticks
 CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
 ```
-It transforms the outer array into rows, cross-joins them with the original table and then use Flink array operators to extract the inner array.
+It transforms the outer array into new rows, cross-joins them with the original table and then use Flink array operators to extract elements of the inner array.
 
 There is another complication: Our Kafka topic contains more than these updates. We also receive other kinds of messages
 from Coinbase. This mimic a real-world situation where Kafka is use as a backbone for all data in a company and our
