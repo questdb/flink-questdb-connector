@@ -4,9 +4,9 @@ Sink data from [Apache Flink](https://flink.apache.org/) pipelines to [QuestDB](
 The connector implements Apache Flink [Table / SQL API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). 
 
 ## Usage with Flink SQL
-_This guide assumes you are familiar with Apache Flink. Please see [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15//docs/try-flink/local_installation/) to learn Flink Basics._ 
+_This guide assumes you are already familiar with Apache Flink. Please see [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15//docs/try-flink/local_installation/) to learn Flink Basics or check our [sample projects](samples)._
  * Save `flink-questdb-connector-<version>-SNAPSHOT.jar` in Flink `./lib/` directory
- * Start Apache Flink server
+ * Start Apache Flink
  * Start QuestDB server
  * Go to Flink SQL console and create a remote table definition:
 ```sql
@@ -20,7 +20,7 @@ CREATE TABLE Orders (
 );
 ```
 Expected output: `[INFO] Execute statement succeed.` 
- * Still in Flink console execute: `insert into Orders values (0, 42, 'IBM');`
+ * While still in the Flink SQL console execute: `insert into Orders values (0, 42, 'IBM');`
  * Go to QuestDB web console and run: `select * from Orders;` You should see a table being created. Chances are the table will be empty. That's caused by [QuestDB commit lag](https://questdb.io/docs/guides/out-of-order-commit-lag), the inserted row will be visible eventually. 
 
 ## Usage with Table API from Java
