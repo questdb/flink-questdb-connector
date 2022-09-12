@@ -96,7 +96,7 @@ Consider this example. Let's have a table `fruits` which looks as follows:
 | Fruit     | Price     | Parts              |
 |-----------|-----------|--------------------|
 | Apple     | 1.99      | [seed, pulp, skin] |
-| Raspbeery | 1.89  | [pulp, seeds]      |
+| Raspberry | 1.89  | [pulp, seeds]      |
 
 The table with 3 columns: 
 1. Fruit - string
@@ -117,8 +117,8 @@ The result of this query would look like this:
 | Apple     | 1.99      | seed         |
 | Apple     | 1.99      | pulp         |
 | Apple     | 1.99      | skin         |
-| Raspbeery | 1.89  | pulp |
-| Raspbeery | 1.89  | seeds |
+| Raspberry | 1.89  | pulp |
+| Raspberry | 1.89  | seeds |
 
 It transforms an array into additional rows. In the pipeline this is expressed as this:
 ```sql
