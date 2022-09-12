@@ -31,7 +31,7 @@ FROM orders
 WHERE price = 1 and side = 'buy'
 SAMPLE BY 1m ALIGN to CALENDAR;
 ```
-At that time I'm writing this there is roughly 1 such BUY order every 10s. I'm not quite sure what's
+At the time I'm writing this there is roughly 1 such BUY order every 10s. I'm not quite sure what's
 the motivation behind such orders, but I find it quite interesting.
 
 You can run more practical queries, have a look at [QuestDB documentation](https://questdb.io/docs/concept/sql-execution-order) for some inspiration.
