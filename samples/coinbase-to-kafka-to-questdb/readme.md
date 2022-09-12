@@ -126,7 +126,7 @@ The UNNEST() function effectively flatten arrays by expanding them into addition
 SELECT product_id, 
        changeTable.change[1] as side, 
        changeTable.change[2] as price, 
-       changeTable.change[3] as volume
+       changeTable.change[3] as volume,
        ts
 FROM ticks
 CROSS JOIN UNNEST(ticks.changes) AS changeTable (change)
