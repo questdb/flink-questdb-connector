@@ -1,6 +1,6 @@
 # Sample project: Coinbase -> Kafka -> Flink -> QuestDB 
 ## What does the sample project do?
-The project uses Coinbase API to fetch live orders and store them in QuestDB where the orders can be analyzed further. 
+The project uses [Coinbase API](https://docs.cloud.coinbase.com/exchange/docs/websocket-overview) to fetch live orders and store them in [QuestDB](https://questdb.io/) where the orders can be analyzed further. 
 
 The application is packaged as Docker containers thus it can run locally on most platforms.
 
