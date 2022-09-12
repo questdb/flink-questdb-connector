@@ -14,6 +14,7 @@ public class KafkaToQuestDB {
         EnvironmentSettings settings = EnvironmentSettings.newInstance().build();
         TableEnvironment tEnv = TableEnvironment.create(settings);
 
+        // Define Kafka source
         tEnv.executeSql("CREATE TABLE Orders (\n"
                 + "  type STRING,\n"
                 + "  product_id STRING,\n"
@@ -30,6 +31,9 @@ public class KafkaToQuestDB {
                 + "  'scan.startup.mode' = 'latest-offset'\n"
                 + ");");
 
+        // Define QuestDB sink. It's using Table API instead of SQL. It's means to show both SQL and Table API works.
+        // Table API and SQL are equivalent and mostly inter-changeable.
+        // You can see Table API as a typed SQL.
         tEnv.createTable("Quest", TableDescriptor.forConnector("questdb")
                 .schema(Schema.newBuilder()
                         .column("product_id", STRING())
@@ -42,6 +46,9 @@ public class KafkaToQuestDB {
                 .option(QuestDBConfiguration.TABLE, "orders")
                 .build());
 
+        // Data processing pipeline.
+        // In reads from Kafka source, filter to get only `l2update` messages, expands the outer array
+        // and finally insert the result into QuestDB sink.
         tEnv.executeSql("INSERT INTO Quest "
                 + "SELECT product_id, "
                     + "changeTable.change[1] as side, "
