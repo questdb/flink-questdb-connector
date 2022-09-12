@@ -42,13 +42,13 @@ public class KafkaToQuestDB {
                 .option(QuestDBConfiguration.TABLE, "orders")
                 .build());
 
-        tEnv.executeSql("insert into Quest "
-                + "select product_id, "
+        tEnv.executeSql("INSERT INTO Quest "
+                + "SELECT product_id, "
                     + "changeTable.change[1] as side, "
                     + "cast(changeTable.change[2] as double) as price, "
                     + "cast(changeTable.change[3] as double) as volume\n"
-                + "from Orders\n"
+                + "FROM Orders\n"
                 + "CROSS JOIN UNNEST(Orders.changes) AS changeTable (change)\n"
-                + "where type = 'l2update'");
+                + "WHERE type = 'l2update'");
     }
 }

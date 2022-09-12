@@ -22,6 +22,19 @@ The project was tested on MacOS with M1, but it should work on other platforms t
 - Congratulations, the connector is working!
 - You can play with the [application](src/main/java/org/questdb/flink/KafkaToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 
 
+## What is it good for?
+You can run analytical queries to get additional insight into order data. 
+For example this query will show you all BUY orders with a price set to 1 USD.
+```sql
+select timestamp, price, volume, count() from orders
+where price = 1 and side = 'buy'
+sample by 1m ALIGN to CALENDAR;
+```
+At that time I'm writing this there is roughly 1 BUY order every 10s with a price set to $1. I'm not quite sure what's
+the motivation behind such orders, but I find it quite interesting.
+
+You can run more practical queries, have a look at [QuestDB documentation](https://questdb.io/docs/concept/sql-execution-order) for some inspiration.
+
 ## How does it work:
 The application is split into 2 parts.
 1. Coinbase -> Kafka
