@@ -5,10 +5,10 @@ The connector implements Apache Flink [Table / SQL API](https://nightlies.apache
 
 ## Usage with Flink SQL
 _This guide assumes you are already familiar with Apache Flink. Please see [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15//docs/try-flink/local_installation/) to learn Flink Basics or check our [sample projects](samples)._
- * Save `flink-questdb-connector-<version>-SNAPSHOT.jar` in Flink `./lib/` directory
- * Start Apache Flink
- * Start QuestDB server
- * Go to Flink SQL console and create a remote table definition:
+ 1. Save `flink-questdb-connector-<version>-SNAPSHOT.jar` in Flink `./lib/` directory
+ 2. Start Apache Flink
+ 3. Start QuestDB server
+ 4. Go to Flink SQL console and create a remote table definition:
 ```sql
 CREATE TABLE Orders (
      order_number BIGINT,
@@ -20,8 +20,8 @@ CREATE TABLE Orders (
 );
 ```
 Expected output: `[INFO] Execute statement succeed.` 
- * While still in the Flink SQL console execute: `insert into Orders values (0, 42, 'IBM');`
- * Go to QuestDB web console and run: `select * from Orders;` You should see a table being created. Chances are the table will be empty. That's caused by [QuestDB commit lag](https://questdb.io/docs/guides/out-of-order-commit-lag), the inserted row will be visible eventually. 
+ 5. While still in the Flink SQL console execute: `insert into Orders values (0, 42, 'IBM');`
+ 6. Go to QuestDB web console and run: `select * from Orders;` You should see a table being created. Chances are the table will be empty. That's caused by [QuestDB commit lag](https://questdb.io/docs/guides/out-of-order-commit-lag), the inserted row will be visible eventually. 
 
 ## Usage with Table API from Java
 See a ready to use [sample projects](samples/).
