@@ -1,4 +1,4 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import io.questdb.cairo.TableUtils;
 import org.apache.flink.configuration.ConfigOption;

@@ -1,6 +1,8 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import org.apache.flink.api.connector.sink2.SinkWriter;
+import org.apache.flink.metrics.Counter;
+import org.apache.flink.metrics.groups.SinkWriterMetricGroup;
 import org.apache.flink.table.data.RowData;
 
 import io.questdb.client.Sender;
@@ -23,11 +25,13 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
     private final Sender sender;
     private final DataType physicalRowDataType;
     private final String targetTable;
+    private final Counter numRecordsOut;
 
-    public QuestDBSinkWriter(DataType physicalRowDataType, String targetTable, Sender sender) {
+    public QuestDBSinkWriter(DataType physicalRowDataType, String targetTable, Sender sender, SinkWriterMetricGroup sinkWriterMetricGroup) {
         this.physicalRowDataType = physicalRowDataType;
         this.targetTable = targetTable;
         this.sender = sender;
+        this.numRecordsOut = sinkWriterMetricGroup.getNumRecordsSendCounter();
     }
 
     @Override
@@ -122,6 +126,7 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
             } else {
                 sender.at(TimeUnit.MILLISECONDS.toNanos(ts));
             }
+            numRecordsOut.inc();
         }
     }
 

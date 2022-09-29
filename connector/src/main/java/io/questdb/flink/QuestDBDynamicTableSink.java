@@ -1,4 +1,4 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import org.apache.flink.table.connector.ChangelogMode;
 import org.apache.flink.table.connector.sink.DynamicTableSink;

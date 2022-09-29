@@ -1,4 +1,4 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import org.apache.flink.api.connector.sink2.Sink;
 import org.apache.flink.api.connector.sink2.SinkWriter;
@@ -31,6 +31,6 @@ public final class QuestDBSink implements Sink<RowData> {
         });
         questDBConfiguration.getBufferSize().ifPresent(buffer -> builder.bufferCapacity(buffer * 1024));
         Sender sender = builder.build();
-        return new QuestDBSinkWriter(physicalRowDataType, questDBConfiguration.getTable(), sender);
+        return new QuestDBSinkWriter(physicalRowDataType, questDBConfiguration.getTable(), sender, context.metricGroup());
     }
 }

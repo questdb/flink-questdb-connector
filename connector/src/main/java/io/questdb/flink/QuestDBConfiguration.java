@@ -1,4 +1,4 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import org.apache.flink.configuration.ConfigOption;
 import org.apache.flink.configuration.ConfigOptions;

@@ -1,6 +1,6 @@
 # Sample project with Flink QuestDB connector
 ## What does the sample project do?
-The [project](src/main/java/org/questdb/flink/DatagenToQuestDB.java) shows how to use the QuestDB connector from [Flink Table API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). It creates a [datagen](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/datagen/) source generating 100 random rows per second and then feeds the generated rows into [QuestDB](https://questdb.io). 
+The [project](flink-questdb-connector/samples/datagen-to-questdb/src/main/java/io/questdb/flink/DatagenToQuestDB.java) shows how to use the QuestDB connector from [Flink Table API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). It creates a [datagen](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/datagen/) source generating 100 random rows per second and then feeds the generated rows into [QuestDB](https://questdb.io). 
 
 The application is packaged as Docker containers thus it can run locally on most platforms. 
 
@@ -20,4 +20,4 @@ The project was tested on MacOS with M1, but it should work on other platforms t
 - Go to the [Flink console](http://localhost:8082/#/job/running) and you should see one job running.
 - Go to the [QuestDB console](http://localhost:19000) and run `select * from from_flink` and you should see some rows.
 - Congratulations, the connector is working!
-- You can play with the [sample application](src/main/java/org/questdb/flink/DatagenToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 
+- You can play with the [sample application](flink-questdb-connector/samples/datagen-to-questdb/src/main/java/io/questdb/flink/DatagenToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 

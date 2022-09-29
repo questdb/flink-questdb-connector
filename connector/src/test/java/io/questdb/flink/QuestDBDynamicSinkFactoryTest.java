@@ -1,4 +1,4 @@
-package org.questdb.flink;
+package io.questdb.flink;
 
 import org.apache.flink.api.connector.sink2.Sink;
 import org.apache.flink.table.api.DataTypes;

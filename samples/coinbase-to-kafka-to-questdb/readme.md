@@ -20,7 +20,7 @@ The project was tested on MacOS with M1, but it should work on other platforms t
 - Go to the [Flink console](http://localhost:8082/#/job/running) and you should see one job running.
 - Go to the [QuestDB console](http://localhost:19000) and run `select * from orders` and you should see some rows.
 - Congratulations, the connector is working!
-- You can play with the [application](src/main/java/org/questdb/flink/KafkaToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 
+- You can play with the [application](flink-questdb-connector/samples/coinbase-to-kafka-to-questdb/src/main/java/io/questdb/flink/KafkaToQuestDB.java) source code to change behaviour. See [Flink Table API documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/dev/table/tableapi/) for more information. 
 
 ## What is it good for?
 You can run analytical queries to get additional insight into order data. 
@@ -46,7 +46,7 @@ The application is split into 2 parts.
 
 The first part is a [small node.js application](../producer/index.js). It does nothing else but connect to the Exchange API, subscribe to a bunch of channels and then store all incoming JSON data into a Kafka topic.
 
-The 2nd part is more interesting. It uses Apache Flink for data filtering, transformations and ingestion to QuestDB. The [sample program combines](src/main/java/org/questdb/flink/KafkaToQuestDB.java) Table API and SQL to interact with Flink. The program has 3 parts:
+The 2nd part is more interesting. It uses Apache Flink for data filtering, transformations and ingestion to QuestDB. The [sample program combines](flink-questdb-connector/samples/coinbase-to-kafka-to-questdb/src/main/java/io/questdb/flink/KafkaToQuestDB.java) Table API and SQL to interact with Flink. The program has 3 parts:
 1. Define Kafka source table
 2. Define QuestDB sink table
 3. Data pipeline to move data from Kafka to Quest
