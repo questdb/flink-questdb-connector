@@ -1,4 +1,4 @@
-FROM maven:3.8-jdk-8-slim AS dep-cache
+FROM maven:3.8-jdk-11-slim AS dep-cache
 WORKDIR /opt
 COPY ./pom.xml /opt/pom.xml
 COPY ./connector/pom.xml /opt/connector/pom.xml
@@ -13,10 +13,12 @@ COPY ./connector/src /opt/connector/src
 COPY ./samples/coinbase-to-kafka-to-questdb/src /opt/samples/coinbase-to-kafka-to-questdb/src
 COPY ./samples/datagen-to-questdb/src /opt/samples/datagen-to-questdb/src
 RUN mvn install -Dmaven.test.skip
+RUN ls -l ./samples/datagen-to-questdb/target/
 
-FROM flink:1.15.2-scala_2.12-java8
-COPY --from=builder /opt/samples/datagen-to-questdb/target/datagen-to-questdb-*.jar /opt/flink/usrlib/datagen-to-questdb.jar
+FROM flink:1.15.2-scala_2.12
+COPY --from=builder /opt/samples/datagen-to-questdb/target/flink-questdb-connector-samples-datagen-to-questdb-*.jar /opt/flink/usrlib/datagen-to-questdb.jar
 COPY --from=builder /opt/connector/target/flink-questdb-connector-*.jar /opt/flink/lib/flink-questdb-connector.jar
+RUN ls -l /opt/flink/usrlib/
 
 RUN echo "pipeline.time-characteristic: EventTime" >> /opt/flink/conf/flink-conf.yaml; \
     echo "taskmanager.memory.jvm-metaspace.size: 256m" >> /opt/flink/conf/flink-conf.yaml;

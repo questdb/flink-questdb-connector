@@ -4,7 +4,11 @@ const { Kafka, logLevel} = require('kafkajs');
 const kafka = new Kafka({
     clientId: 'producer',
     brokers: ['kafka:9092'],
-    logLevel: logLevel.INFO
+    logLevel: logLevel.INFO,
+    retry: {
+        initialRetryTime: 1000,
+        retries: 10,
+    }
 });
 
 const producer = kafka.producer();

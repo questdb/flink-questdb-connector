@@ -2,9 +2,9 @@ version: '2.1'
 services:
   jobmanager:
     image: questdb-flink-sample-coinbase
-#    build:
-#      dockerfile: ./Dockerfile-Sample-Coinbase
-#      context: ./../../
+    build:
+      dockerfile: ./Dockerfile-Sample-Coinbase
+      context: ./../../
     hostname: "jobmanager"
     expose:
       - "6123"
@@ -29,7 +29,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   questdb:
-    image: questdb/questdb:6.5.2
+    image: questdb/questdb:6.6.1
     expose:
       - "9009"
     ports:
@@ -57,9 +57,9 @@ services:
       KAFKA_CREATE_TOPICS: "Orders:1:1"
   producer:
     image: questdb-flink-sample-producer
-#    build:
-#      context: ./../producer
-#      dockerfile: ./Dockerfile
+    build:
+      context: ./../producer
+      dockerfile: ./Dockerfile
     depends_on:
       - kafka
     links:

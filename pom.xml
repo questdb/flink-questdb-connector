@@ -38,13 +38,13 @@
     </developers>
 
     <properties>
-        <questdb.version>6.5.1-jdk8</questdb.version>
+        <questdb.version>6.6.1</questdb.version>
         <flink.version>1.15.2</flink.version>
         <testcontainers.version>1.17.3</testcontainers.version>
         <httpclient.version>4.5.13</httpclient.version>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
