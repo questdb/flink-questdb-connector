@@ -4,7 +4,7 @@
     <parent>
         <artifactId>flink-questdb-connector-root</artifactId>
         <groupId>org.questdb</groupId>
-        <version>0.12-SNAPSHOT</version>
+        <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.binary.version>2.12</scala.binary.version>
-        <flink.version>1.15.2</flink.version>
+        <flink.version>1.16.1</flink.version>
         <maven.deploy.skip>true</maven.deploy.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
