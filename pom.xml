@@ -12,7 +12,7 @@
         <module>connector</module>
         <module>samples</module>
     </modules>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
 
     <packaging>pom</packaging>
 
@@ -20,7 +20,7 @@
         <connection>scm:git:https://github.com/questdb/flink-questdb-connector.git</connection>
         <developerConnection>scm:git:https://github.com/questdb/flink-questdb-connector.git</developerConnection>
         <url>https://github.com/questdb/flink-questdb-connector</url>
-        <tag>HEAD</tag>
+        <tag>v0.4</tag>
     </scm>
 
     <licenses>
@@ -58,9 +58,9 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
                     <configuration>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <tagNameFormat>v@{project.version}</tagNameFormat>
-                        <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <arguments>-Dmaven.test.skipTests=true -Dmaven.test.skip=true</arguments>
+                        <releaseProfiles>maven-central-release</releaseProfiles>
                     </configuration>
                 </plugin>
                 <plugin>
