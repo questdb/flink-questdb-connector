@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
         <artifactId>flink-questdb-connector-root</artifactId>
@@ -12,7 +10,6 @@
 
     <artifactId>flink-questdb-connector-samples</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
     <modules>
         <module>datagen-to-questdb</module>
         <module>coinbase-to-kafka-to-questdb</module>
@@ -23,7 +20,9 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.binary.version>2.12</scala.binary.version>
-        <flink.version>1.15.2</flink.version>
+        <flink.version>1.16.1</flink.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
 
     <dependencies>
@@ -36,7 +35,7 @@
         <dependency>
             <groupId>org.questdb</groupId>
             <artifactId>flink-questdb-connector</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
