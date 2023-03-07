@@ -12,7 +12,7 @@
         <module>connector</module>
         <module>samples</module>
     </modules>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <packaging>pom</packaging>
 
@@ -20,7 +20,7 @@
         <connection>scm:git:https://github.com/questdb/flink-questdb-connector.git</connection>
         <developerConnection>scm:git:https://github.com/questdb/flink-questdb-connector.git</developerConnection>
         <url>https://github.com/questdb/flink-questdb-connector</url>
-        <tag>HEAD</tag>
+        <tag>0.2</tag>
     </scm>
 
     <licenses>
