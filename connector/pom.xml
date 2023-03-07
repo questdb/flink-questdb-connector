@@ -4,7 +4,7 @@
 
     <artifactId>flink-questdb-connector</artifactId>
     <groupId>org.questdb</groupId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>QuestDB Connector for Apache Flink</name>
     <description>QuestDB ILP Connector for Apache Flink</description>

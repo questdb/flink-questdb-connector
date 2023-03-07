@@ -4,7 +4,7 @@
 
     <artifactId>flink-questdb-connector-samples-datagen-to-questdb</artifactId>
     <groupId>org.questdb</groupId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
