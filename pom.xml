@@ -38,12 +38,6 @@
     </developers>
 
     <properties>
-        <questdb.version>6.6.1</questdb.version>
-        <flink.version>1.16.1</flink.version>
-        <testcontainers.version>1.17.3</testcontainers.version>
-        <httpclient.version>4.5.14</httpclient.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -62,11 +56,6 @@
                         <arguments>-Dmaven.test.skipTests=true -Dmaven.test.skip=true</arguments>
                         <releaseProfiles>maven-central-release</releaseProfiles>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
