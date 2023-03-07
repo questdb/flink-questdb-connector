@@ -5,7 +5,7 @@
 
     <artifactId>flink-questdb-connector-samples</artifactId>
     <groupId>org.questdb</groupId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>pom</packaging>
     <modules>
         <module>datagen-to-questdb</module>

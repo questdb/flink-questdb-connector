@@ -5,7 +5,7 @@
 
     <artifactId>flink-questdb-connector-samples-coinbase-to-kafka-to-questdb</artifactId>
     <groupId>org.questdb</groupId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
