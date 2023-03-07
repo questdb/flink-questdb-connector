@@ -6,6 +6,9 @@
     <groupId>org.questdb</groupId>
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>QuestDB Connector for Apache Flink</name>
+    <description>QuestDB ILP Connector for Apache Flink</description>
+    <url>https://github.com/questdb/flink-questdb-connector.git</url>
 
     <properties>
         <maven.javadoc.skip>false</maven.javadoc.skip>
@@ -219,6 +222,27 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:https://github.com/questdb/flink-questdb-connector.git</connection>
+        <developerConnection>scm:git:https://github.com/questdb/flink-questdb-connector.git</developerConnection>
+        <url>https://github.com/questdb/flink-questdb-connector</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>QuestDB Team</name>
+            <email>hello@questdb.io</email>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <snapshotRepository>

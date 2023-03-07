@@ -5,8 +5,8 @@
 
     <groupId>org.questdb</groupId>
     <artifactId>flink-questdb-connector-root</artifactId>
-    <name>QuestDB ILP Connector for Apache Flink</name>
-    <description>QuestDB ILP Connector for Apache Flink</description>
+    <name>QuestDB Connector for Apache Flink - root</name>
+    <description>QuestDB Connector for Apache Flink - root</description>
     <url>https://github.com/questdb/flink-questdb-connector.git</url>
     <modules>
         <module>connector</module>
