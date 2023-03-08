@@ -3,8 +3,8 @@ services:
   jobmanager:
     image: questdb-flink-sample-datagen
     build:
-      dockerfile: ./Dockerfile-Sample-Datagen
-      context: ./../../
+      dockerfile: ./Dockerfile
+      context: ./
     hostname: "jobmanager"
     expose:
       - "6123"
@@ -29,7 +29,7 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
   questdb:
-    image: questdb/questdb:6.5.2
+    image: questdb/questdb:7.0.1
     expose:
       - "9009"
     ports:

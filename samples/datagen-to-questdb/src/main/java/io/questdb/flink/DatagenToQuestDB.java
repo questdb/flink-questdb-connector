@@ -29,9 +29,9 @@ public class DatagenToQuestDB {
                         .column("price", BIGINT())
                         .column("buyer", STRING())
                         .build())
-                .option(QuestDBConfiguration.HOST, "questdb")
-                .option(QuestDBConfiguration.BUFFER_SIZE_KB, 1)
-                .option(QuestDBConfiguration.TABLE, "from_flink")
+                .option("host", "questdb")
+                .option("buffer.size.kb", "1")
+                .option("table", "from_flink")
                 .build());
 
         tEnv.from("Orders").executeInsert("Quest");
