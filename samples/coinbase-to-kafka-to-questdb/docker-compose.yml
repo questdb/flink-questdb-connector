@@ -3,8 +3,8 @@ services:
   jobmanager:
     image: questdb-flink-sample-coinbase
     build:
-      dockerfile: ./Dockerfile-Sample-Coinbase
-      context: ./../../
+      dockerfile: ./Dockerfile
+      context: ./
     hostname: "jobmanager"
     expose:
       - "6123"

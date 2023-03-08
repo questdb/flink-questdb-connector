@@ -31,7 +31,7 @@ public class KafkaToQuestDB {
                 + "  'scan.startup.mode' = 'latest-offset'\n"
                 + ");");
 
-        // Define QuestDB sink. It's using Table API instead of SQL. It's means to show both SQL and Table API works.
+        // Define QuestDB sink. It's using Table API instead of SQL.
         // Table API and SQL are equivalent and mostly inter-changeable.
         // You can see Table API as a typed SQL.
         tEnv.createTable("Quest", TableDescriptor.forConnector("questdb")
@@ -41,9 +41,9 @@ public class KafkaToQuestDB {
                         .column("price", DOUBLE())
                         .column("volume", DOUBLE())
                         .build())
-                .option(QuestDBConfiguration.HOST, "questdb")
-                .option(QuestDBConfiguration.BUFFER_SIZE_KB, 1)
-                .option(QuestDBConfiguration.TABLE, "orders")
+                .option("host", "questdb")
+                .option("buffer.size.kb", "1")
+                .option("table", "orders")
                 .build());
 
         // Data processing pipeline.
