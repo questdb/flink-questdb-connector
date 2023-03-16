@@ -8,7 +8,7 @@ WORKDIR /opt
 COPY src /opt/src
 RUN mvn install -Dmaven.test.skip
 
-FROM flink:1.15.2-scala_2.12
+FROM flink:1.16.1-scala_2.12
 COPY --from=builder /opt/target/flink-questdb-connector-samples-datagen-to-questdb-*.jar /opt/flink/usrlib/datagen-to-questdb.jar
 RUN wget -P /opt/flink/lib/ https://repo1.maven.org/maven2/org/questdb/flink-questdb-connector/0.2/flink-questdb-connector-0.2.jar
 

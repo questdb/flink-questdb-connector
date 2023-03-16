@@ -3,6 +3,8 @@ Sink data from [Apache Flink](https://flink.apache.org/) pipelines to [QuestDB](
 
 The connector implements Apache Flink [Table / SQL API](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/connectors/table/overview/). 
 
+It has been tested to work with Flink versions 1.15 and 1.16.
+
 ## Usage with Flink SQL
 _This guide assumes you are already familiar with Apache Flink. Please see [Flink Documentation](https://nightlies.apache.org/flink/flink-docs-release-1.15//docs/try-flink/local_installation/) to learn Flink Basics or check our [sample projects](samples)._
  1. Save `flink-questdb-connector-<version>-SNAPSHOT.jar` in Flink `./lib/` directory
