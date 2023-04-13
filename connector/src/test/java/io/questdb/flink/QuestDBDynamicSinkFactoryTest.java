@@ -66,10 +66,10 @@ public class QuestDBDynamicSinkFactoryTest {
     }
 
     @Container
-    public static GenericContainer questdb = new GenericContainer(DockerImageName.parse("questdb/questdb:6.5.1"))
-            .withEnv("QDB_CAIRO_COMMIT_LAG", "100")
+    public static GenericContainer<?> questdb = new GenericContainer<>(DockerImageName.parse("questdb/questdb:7.1.1"))
             .withEnv("JAVA_OPTS", "-Djava.locale.providers=JRE,SPI") // this makes QuestDB container much faster to start
-            .withExposedPorts(ILP_PORT, HTTP_PORT);
+            .withExposedPorts(ILP_PORT, HTTP_PORT)
+            .withLogConsumer(outputFrame -> System.out.print(outputFrame.getUtf8String()));
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws IOException {
@@ -114,8 +114,7 @@ public class QuestDBDynamicSinkFactoryTest {
                 .executeInsert("questTable")
                 .await();
 
-        assertSqlEventually("\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\"\r\n"
-                        + "1,\"2022-06-01T10:10:10.000010Z\",\"ABCDE\",12.119999885559,2,\"2003-10-20T00:00:00.000000Z\",\"2012-12-12T12:12:12.000000Z\"\r\n",
+        assertSqlEventually("{\"query\":\"select a, b, c, d, e, f, g from testSmoke\",\"columns\":[{\"name\":\"a\",\"type\":\"LONG\"},{\"name\":\"b\",\"type\":\"TIMESTAMP\"},{\"name\":\"c\",\"type\":\"STRING\"},{\"name\":\"d\",\"type\":\"DOUBLE\"},{\"name\":\"e\",\"type\":\"LONG\"},{\"name\":\"f\",\"type\":\"TIMESTAMP\"},{\"name\":\"g\",\"type\":\"TIMESTAMP\"}],\"dataset\":[[1,\"2022-06-01T10:10:10.000010Z\",\"ABCDE\",12.119999885559,2,\"2003-10-20T00:00:00.000000Z\",\"2012-12-12T12:12:12.000000Z\"]],\"timestamp\":-1,\"count\":1}",
                 "select a, b, c, d, e, f, g from " + testName);
     }
 
@@ -219,9 +218,44 @@ public class QuestDBDynamicSinkFactoryTest {
         tableEnvironment.executeSql(
                 "INSERT INTO questTable select * from datagen").await();
 
-        assertSqlEventually("\"count\"\r\n"
-                        + "10\r\n",
+        assertSqlEventually("{\"query\":\"select count(*) from testEventTime where col_timestamp = timestamp\",\"columns\":[{\"name\":\"count\",\"type\":\"LONG\"}],\"dataset\":[[10]],\"timestamp\":-1,\"count\":1}",
                 "select count(*) from " + testName + " where col_timestamp = timestamp");
+    }
+
+    @Test
+    public void testPrecreatedTableDesignatedTimestamp() throws Exception {
+        assertSql("{\"ddl\":\"OK\"}", "CREATE TABLE " + testName + " (timestamp timestamp, name string) timestamp(timestamp) partition by DAY");
+
+        TableEnvironment tableEnvironment =
+                TableEnvironment.create(EnvironmentSettings.inStreamingMode());
+        tableEnvironment.getConfig().set(TableConfigOptions.LOCAL_TIME_ZONE, "UTC");
+        tableEnvironment.executeSql(
+                "CREATE TABLE questTable ("
+                        + "`timestamp` TIMESTAMP(3),\n"
+                        + "name VARCHAR\n"
+                        + ")\n"
+                        + "WITH (\n"
+                        + String.format("'%s'='%s',\n", "connector", "questdb")
+                        + String.format("'%s'='%s',\n", "host", getIlpHostAndPort())
+                        + String.format("'%s'='%s',\n", "timestamp.field.name", "timestamp")
+                        + String.format("'%s'='%s'\n", "table", testName)
+                        + ")").await();
+
+        tableEnvironment.executeSql(
+                "CREATE TABLE datagen ("
+                        + "`timestamp` timestamp(3),\n"
+                        + "name varchar\n"
+                        + ")\n"
+                        + "WITH (\n"
+                        + String.format("'%s'='%s',\n", "connector", "datagen")
+                        + String.format("'%s'='%s'\n", "number-of-rows", "10")
+                        + ")").await();
+
+        tableEnvironment.executeSql(
+                "INSERT INTO questTable select * from datagen").await();
+
+        assertSqlEventually("{\"query\":\"select count(*) from testPrecreatedTableDesignatedTimestamp where timestamp > '1980-01'\",\"columns\":[{\"name\":\"count\",\"type\":\"LONG\"}],\"dataset\":[[10]],\"timestamp\":-1,\"count\":1}",
+                "select count(*) from " + testName + " where timestamp > '1980-01'");
     }
 
     @Test
@@ -276,8 +310,26 @@ public class QuestDBDynamicSinkFactoryTest {
                 ).executeInsert("questTable")
                 .await();
 
-        assertSqlEventually("\"a\",\"b\",\"c\",\"d\",\"h\",\"i\",\"j\",\"k\",\"l\",\"m\",\"n\",\"o\",\"p\",\"q\",\"r\"\r\n"
-                        + "\"c\",\"varchar\",\"string\",true,42,42,42,42,10000000000,42.419998168945,42.42,\"2022-06-06T00:00:00.000000Z\",43920000,\"2022-09-03T12:12:12.000000Z\",\"2022-09-03T12:12:12.000000Z\"\r\n",
+        assertSqlEventually("{\"query\":\"select a, b, c, d, h, i, j, k, l, m, n, o, p, q, r from testAllSupportedTypes\"," +
+                        "\"columns\":[" +
+                            "{\"name\":\"a\",\"type\":\"STRING\"}," +
+                            "{\"name\":\"b\",\"type\":\"STRING\"}," +
+                            "{\"name\":\"c\",\"type\":\"STRING\"}," +
+                            "{\"name\":\"d\",\"type\":\"BOOLEAN\"}," +
+                            "{\"name\":\"h\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"i\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"j\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"k\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"l\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"m\",\"type\":\"DOUBLE\"}," +
+                            "{\"name\":\"n\",\"type\":\"DOUBLE\"}," +
+                            "{\"name\":\"o\",\"type\":\"TIMESTAMP\"}," +
+                            "{\"name\":\"p\",\"type\":\"LONG\"}," +
+                            "{\"name\":\"q\",\"type\":\"TIMESTAMP\"}," +
+                            "{\"name\":\"r\",\"type\":\"TIMESTAMP\"}" +
+                        "],\"dataset\":[" +
+                            "[\"c\",\"varchar\",\"string\",true,42,42,42,42,10000000000,42.419998168945,42.42,\"2022-06-06T00:00:00.000000Z\",43920000,\"2022-09-03T12:12:12.000000Z\",\"2022-09-03T12:12:12.000000Z\"]" +
+                        "],\"timestamp\":-1,\"count\":1}",
                 "select a, b, c, d, h, i, j, k, l, m, n, o, p, q, r from " + testName);
     }
 
@@ -299,7 +351,7 @@ public class QuestDBDynamicSinkFactoryTest {
 
     private CloseableHttpResponse executeQuery(String query) throws IOException {
         String encodedQuery = URLEncoder.encode(query, "UTF-8");
-        HttpGet httpGet = new HttpGet(String.format("http://%s:%d//exp?query=%s", questdb.getHost(), questdb.getMappedPort(HTTP_PORT), encodedQuery));
+        HttpGet httpGet = new HttpGet(String.format("http://%s:%d//exec?query=%s", questdb.getHost(), questdb.getMappedPort(HTTP_PORT), encodedQuery));
         return HTTP_CLIENT.execute(httpGet);
     }
 

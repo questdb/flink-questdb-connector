@@ -31,6 +31,6 @@ public final class QuestDBSink implements Sink<RowData> {
         });
         questDBConfiguration.getBufferSize().ifPresent(buffer -> builder.bufferCapacity(buffer * 1024));
         Sender sender = builder.build();
-        return new QuestDBSinkWriter(physicalRowDataType, questDBConfiguration.getTable(), sender, context.metricGroup());
+        return new QuestDBSinkWriter(physicalRowDataType, questDBConfiguration.getTable(), sender, context.metricGroup(), questDBConfiguration.getTimestampColumn());
     }
 }

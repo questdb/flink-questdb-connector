@@ -45,6 +45,12 @@ public final class QuestDBConfiguration implements Serializable {
                     .noDefaultValue()
                     .withDescription("ILP client buffer size in KB");
 
+    public static final ConfigOption<String> TIMESTAMP_COLUMN =
+            ConfigOptions.key("timestamp.field.name")
+                    .stringType()
+                    .noDefaultValue()
+                    .withDescription("Designated timestamp field name");
+
 
     public static final ConfigOption<Integer> SINK_PARALLELISM = FactoryUtil.SINK_PARALLELISM;
 
@@ -83,5 +89,9 @@ public final class QuestDBConfiguration implements Serializable {
 
     public Optional<Integer> getBufferSize() {
         return readableConfig.getOptional(BUFFER_SIZE_KB);
+    }
+
+    public String getTimestampColumn() {
+        return readableConfig.get(TIMESTAMP_COLUMN);
     }
 }
