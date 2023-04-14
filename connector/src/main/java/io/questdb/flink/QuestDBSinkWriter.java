@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 public final class QuestDBSinkWriter implements SinkWriter<RowData> {
     private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
-    private static final TimeUnitConverter TO_MICROS = (duration, timeUnit) -> timeUnit.toMicros(duration);
-    private static final TimeUnitConverter TO_NANOS = (duration, timeUnit) -> timeUnit.toNanos(duration);
 
     private final Sender sender;
     private final DataType physicalRowDataType;
@@ -51,17 +49,17 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
             case TIMESTAMP_WITH_LOCAL_TIME_ZONE: {
                 int timestampPrecision = ((LocalZonedTimestampType) type).getPrecision();
                 TimestampData timestamp = rw.getTimestamp(pos, timestampPrecision);
-                return convertTimestamp(TO_NANOS, timestamp);
+                return convertTimestamp(TimeUnit.NANOSECONDS, timestamp);
             }
             case TIMESTAMP_WITHOUT_TIME_ZONE: {
                 int timestampPrecision = ((TimestampType) type).getPrecision();
                 TimestampData timestamp = rw.getTimestamp(pos, timestampPrecision);
-                return convertTimestamp(TO_NANOS, timestamp);
+                return convertTimestamp(TimeUnit.NANOSECONDS, timestamp);
             }
             case TIMESTAMP_WITH_TIME_ZONE: {
                 int timestampPrecision = ((ZonedTimestampType) type).getPrecision();
                 TimestampData timestamp = rw.getTimestamp(pos, timestampPrecision);
-                return convertTimestamp(TO_NANOS, timestamp);
+                return convertTimestamp(TimeUnit.NANOSECONDS, timestamp);
             }
             default:
                 throw new UnsupportedOperationException(type + " type is not supported as a designated timestamp column");
@@ -72,7 +70,7 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
         final RowType rowType = (RowType) physicalRowDataType.getLogicalType();
         List<RowType.RowField> fields = rowType.getFields();
         sender.table(targetTable);
-        long extractedTimestamp = -1;
+        long extractedTimestampNanos = -1;
         try {
             for (int i = 0; i < fields.size(); i++) {
                 RowType.RowField rowField = fields.get(i);
@@ -80,7 +78,7 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
                 String name = rowField.getName();
                 LogicalTypeRoot logicalTypeRoot = type.getTypeRoot();
                 if (name.equals(timestampColumn)) {
-                    extractedTimestamp = extractDesignatedTimestamp(type, rw, i);
+                    extractedTimestampNanos = extractDesignatedTimestamp(type, rw, i);
                 } else {
                     switch (logicalTypeRoot) {
                         case CHAR:
@@ -106,26 +104,26 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
                         case DATE: {
                             LocalDate localDate = LocalDate.ofEpochDay(rw.getInt(i));
                             ZonedDateTime utc = localDate.atStartOfDay(UTC_ZONE_ID);
-                            long value = TO_MICROS.convert(utc.toEpochSecond(), TimeUnit.SECONDS);
-                            sender.timestampColumn(name, value);
+                            long micros = TimeUnit.SECONDS.toMicros(utc.toEpochSecond());
+                            sender.timestampColumn(name, micros);
                             break;
                         }
                         case TIMESTAMP_WITH_LOCAL_TIME_ZONE: {
                             int timestampPrecision = ((LocalZonedTimestampType) type).getPrecision();
                             TimestampData timestamp = rw.getTimestamp(i, timestampPrecision);
-                            sender.timestampColumn(name, convertTimestamp(TO_MICROS, timestamp));
+                            sender.timestampColumn(name, convertTimestamp(TimeUnit.MICROSECONDS, timestamp));
                             break;
                         }
                         case TIMESTAMP_WITHOUT_TIME_ZONE: {
                             int timestampPrecision = ((TimestampType) type).getPrecision();
                             TimestampData timestamp = rw.getTimestamp(i, timestampPrecision);
-                            sender.timestampColumn(name, convertTimestamp(TO_MICROS, timestamp));
+                            sender.timestampColumn(name, convertTimestamp(TimeUnit.MICROSECONDS, timestamp));
                             break;
                         }
                         case TIMESTAMP_WITH_TIME_ZONE: {
                             int timestampPrecision = ((ZonedTimestampType) type).getPrecision();
                             TimestampData timestamp = rw.getTimestamp(i, timestampPrecision);
-                            sender.timestampColumn(name, convertTimestamp(TO_MICROS, timestamp));
+                            sender.timestampColumn(name, convertTimestamp(TimeUnit.MICROSECONDS, timestamp));
                             break;
                         }
                         case TIME_WITHOUT_TIME_ZONE: {
@@ -153,8 +151,8 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
                 }
             }
         } finally {
-            if (extractedTimestamp != -1) {
-                sender.at(extractedTimestamp);
+            if (extractedTimestampNanos != -1) {
+                sender.at(extractedTimestampNanos);
             } else if (eventTimeMillis != null) {
                 sender.at(TimeUnit.MILLISECONDS.toNanos(eventTimeMillis));
             } else {
@@ -164,9 +162,9 @@ public final class QuestDBSinkWriter implements SinkWriter<RowData> {
         }
     }
 
-    private static long convertTimestamp(TimeUnitConverter timeUnitConverter, TimestampData timestamp) {
-        return timeUnitConverter.convert(timestamp.getMillisecond(), TimeUnit.MILLISECONDS)
-                + timeUnitConverter.convert(timestamp.getNanoOfMillisecond(), TimeUnit.NANOSECONDS);
+    private static long convertTimestamp(TimeUnit target, TimestampData timestamp) {
+        return target.convert(timestamp.getMillisecond(), TimeUnit.MILLISECONDS)
+                + target.convert(timestamp.getNanoOfMillisecond(), TimeUnit.NANOSECONDS);
     }
 
     @Override
