@@ -218,8 +218,13 @@ public class QuestDBDynamicSinkFactoryTest {
         tableEnvironment.executeSql(
                 "INSERT INTO questTable select * from datagen").await();
 
-        assertSqlEventually("{\"query\":\"select count(*) from testEventTime where col_timestamp = timestamp\",\"columns\":[{\"name\":\"count\",\"type\":\"LONG\"}],\"dataset\":[[10]],\"timestamp\":-1,\"count\":1}",
-                "select count(*) from " + testName + " where col_timestamp = timestamp");
+        assertSqlEventually("{\"query\":\"select count(*) from testEventTime where col_timestamp = timestamp and timestamp > '2000-01-01'\"," +
+                        "\"columns\":[" +
+                            "{\"name\":\"count\",\"type\":\"LONG\"}]," +
+                        "\"dataset\":[[10]]," +
+                        "\"timestamp\":-1," +
+                        "\"count\":1}",
+                "select count(*) from " + testName + " where col_timestamp = timestamp and timestamp > '2000-01-01'");
     }
 
     @Test
