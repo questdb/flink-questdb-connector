@@ -4,7 +4,7 @@
 
     <artifactId>flink-questdb-connector</artifactId>
     <groupId>org.questdb</groupId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
     <name>QuestDB Connector for Apache Flink</name>
     <description>QuestDB ILP Connector for Apache Flink</description>
@@ -227,7 +227,7 @@
         <connection>scm:git:https://github.com/questdb/flink-questdb-connector.git</connection>
         <developerConnection>scm:git:https://github.com/questdb/flink-questdb-connector.git</developerConnection>
         <url>https://github.com/questdb/flink-questdb-connector</url>
-        <tag>HEAD</tag>
+        <tag>0.3</tag>
     </scm>
 
     <licenses>
